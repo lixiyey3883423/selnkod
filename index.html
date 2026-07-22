@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🌹</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Open+Sans:wght@600&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    canvas {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    #heart-canvas {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 11;
+      pointer-events: none;
+    }
+
+    #heart-canvas.show {
+      display: block;
+    }
+
+    #birthday-text {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    #birthday-text.show {
+      display: flex;
+    }
+
+    #birthday-text span {
+      font-family: 'Open Sans', sans-serif;
+      font-size: clamp(1.6rem, 5.5vw, 3rem);
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      letter-spacing: 4px;
+      text-shadow:
+        0 0 10px #ff2d78,
+        0 0 30px #ff2d78,
+        0 0 60px #c8748a;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      line-height: 1.4;
+      padding: 0 15px;
+      position: fixed;
+      left: 0;
+      right: 0;
+      text-align: center;
+      word-break: break-word;
+    }
+
+    #birthday-text span.visible {
+      opacity: 1;
+    }
+
+    /* NEHİR TUVALİ */
+    #river-canvas {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+      opacity: 0;
+      transition: opacity 3s ease;
+      pointer-events: none;
+    }
+
+    #river-canvas.show {
+      opacity: 1;
+    }
+
+    /* MEKTUP KUTUCUĞU */
+    #space-text-box {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      /* DÜZELTME: 3 saniyeden 0.8 saniyeye çekildi, anında belirecek */
+    }
+
+    #space-text-box.show {
+      display: flex;
+    }
+
+    #space-text-box.visible {
+      opacity: 1;
+    }
+
+    .space-content {
+      background: rgba(10, 15, 20, 0.65);
+      /* DÜZELTME: Arkası biraz daha koyulaştırıldı */
+      backdrop-filter: blur(15px);
+      /* DÜZELTME: Blur anında etki etsin diye artırıldı */
+      -webkit-backdrop-filter: blur(15px);
+      padding: 35px 25px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+
+      width: 88%;
+      max-width: 650px;
+      max-height: 75vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+
+      text-align: left;
+      color: rgba(240, 245, 255, 0.95);
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      font-size: clamp(0.95rem, 4vw, 1.15rem);
+      line-height: 1.7;
+      letter-spacing: 0.5px;
+    }
+
+    .signature {
+      display: block;
+      text-align: left;
+      margin-top: 25px;
+      color: #ff2d78;
+      font-weight: bold;
+      font-style: italic;
+      font-size: 1.15em;
+      text-shadow: 0 0 8px rgba(255, 45, 120, 0.5);
+    }
+
+    .space-content::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .space-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .space-content::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="matrix"></canvas>
+  <canvas id="heart-canvas"></canvas>
+  <div id="birthday-text"><span id="bday-span">dogum gunun kutlu olsun &lt;3</span></div>
+  <canvas id="river-canvas"></canvas>
+
+  <div id="space-text-box">
+    <div class="space-content">
+      Yaklaşık 20 gündür konuşuyoruz ve seninle zaman
+      geçirmekten gerçekten çok zevk alıyorum.
+      Öyle ki seninle uzun süren sohbetlerimizde
+      zamanın nasıl gelip geçtiğini anlamıyorum
+      bile. Üstelik çoğu konuda uyumlu olmamız,
+      ortak zevk ve yapımız olması beni
+      sana çok çekiyor. Bunların yanısıra güzel, narin,
+      zarif havan seni benim için
+      çok çekici kılıyor.
+      <br><br>
+      Tüm bunlardan dolayı seninle birlikte olduğum için kendimi çok mutlu ve şanslı hissediyorum. Bu zamana kadar bana
+      hissettirdiğin tüm güzel hisler için teşekkür ederim. Hep birlikte olmamızı diliyorum.
+      <br>
+      <span class="signature">Doğum günün kutlu olsun</span>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const MSG = 'DOGUMGUNUNKUTLUOLSUN<3';
+    const FS = 13;
+    const SPEED = 130;
+    const COLORS = ['#ff2d78', '#ff2d78', '#ff2d78', '#e8799a', '#ff6fa8', '#c8748a', '#b84070'];
+    const rndClr = () => COLORS[Math.floor(Math.random() * COLORS.length)];
+
+    let cols, rows, drops, chars, colors;
+
+    function initMatrix() {
+      cols = Math.floor(canvas.width / FS);
+      rows = Math.floor(canvas.height / FS);
+      drops = Array.from({ length: cols }, () => -Math.floor(Math.random() * rows));
+      chars = Array.from({ length: cols }, (_, i) => MSG[i % MSG.length]);
+      colors = Array.from({ length: cols }, () => rndClr());
+    }
+
+    let lastT = 0;
+    function drawMatrix(ts) {
+      requestAnimationFrame(drawMatrix);
+      if (ts - lastT < SPEED) return;
+      lastT = ts;
+      ctx.fillStyle = 'rgba(26, 26, 46, 0.10)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `bold ${FS}px 'Courier New', monospace`;
+      for (let i = 0; i < cols; i++) {
+        const y = drops[i];
+        const x = i * FS;
+        if (y >= 0) {
+          const c = colors[i];
+          ctx.shadowColor = c; ctx.shadowBlur = 18;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(chars[i], x, y * FS);
+          if (y - 1 >= 0) { ctx.shadowBlur = 10; ctx.fillStyle = c; ctx.fillText(chars[i], x, (y - 1) * FS); }
+          ctx.shadowBlur = 0;
+        }
+        drops[i]++;
+        if (drops[i] * FS > canvas.height + FS * 6) {
+          drops[i] = -Math.floor(Math.random() * 8);
+          colors[i] = rndClr();
+        }
+      }
+    }
+
+    initMatrix();
+    requestAnimationFrame(drawMatrix);
+    setTimeout(showHeart, 6500);
+
+    function showHeart() {
+      const hc = document.getElementById('heart-canvas');
+      hc.width = window.innerWidth; hc.height = window.innerHeight;
+      hc.classList.add('show');
+      const hctx = hc.getContext('2d');
+      const cx = hc.width / 2;
+      const cy = hc.height / 2 + 60;
+      const sc = Math.min(hc.width, hc.height) / 40;
+
+      setTimeout(() => {
+        const bdayDiv = document.getElementById('birthday-text');
+        const bdaySpan = document.getElementById('bday-span');
+        bdayDiv.classList.add('show');
+        const heartTop = cy - 12 * sc;
+        bdaySpan.style.top = (heartTop - 10) + 'px';
+        bdaySpan.style.transform = 'translateY(-100%)';
+
+        setTimeout(() => {
+          bdaySpan.classList.add('visible');
+          setTimeout(() => {
+            canvas.style.transition = "opacity 2s ease";
+            hc.style.transition = "opacity 2s ease";
+            bdaySpan.style.transition = "opacity 2s ease";
+
+            canvas.style.opacity = "0";
+            hc.style.opacity = "0";
+            bdaySpan.style.opacity = "0";
+
+            setTimeout(startRiver, 1000);
+          }, 3300);
+        }, 50);
+      }, 4000);
+
+      function hearta(k) { return 15 * Math.pow(Math.sin(k), 3); }
+      function heartb(k) { return 12 * Math.cos(k) - 5 * Math.cos(2 * k) - 2 * Math.cos(3 * k) - Math.cos(4 * k); }
+
+      let i = 0;
+      function draw() {
+        if (i > 6000) return;
+        hctx.strokeStyle = "#900C3F"; hctx.lineWidth = 0.5; hctx.globalAlpha = 0.5;
+        for (let step = 0; step < 20; step++) {
+          i++; if (i > 6000) break;
+          hctx.beginPath(); hctx.moveTo(cx, cy);
+          const x = hearta(i) * sc; const y = -heartb(i) * sc;
+          hctx.lineTo(cx + x, cy + y); hctx.stroke();
+        }
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    const rCanvas = document.getElementById('river-canvas');
+    const rCtx = rCanvas.getContext('2d');
+    let rain = [], ripples = [], lotuses = [];
+
+    function initRiver() {
+      rCanvas.width = window.innerWidth;
+      rCanvas.height = window.innerHeight;
+      rain = []; ripples = []; lotuses = [];
+
+      for (let i = 0; i < 70; i++) {
+        rain.push({
+          x: Math.random() * rCanvas.width,
+          y: Math.random() * rCanvas.height,
+          l: Math.random() * 15 + 10,
+          vx: 1.5,
+          vy: Math.random() * 15 + 15
+        });
+      }
+
+      for (let i = 0; i < 8; i++) {
+        lotuses.push({
+          x: Math.random() * rCanvas.width,
+          y: Math.random() * rCanvas.height,
+          s: Math.random() * 0.4 + 0.3,
+          a: Math.random() * Math.PI * 2,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: Math.random() * 0.4 + 0.1
+        });
+      }
+    }
+
+    function drawLily(ctx, x, y, s, a) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(a);
+      ctx.scale(s, s);
+
+      // Yaprak (büyük yuvarlak koyu yaprak - nenüfar)
+      ctx.fillStyle = 'rgba(15, 28, 10, 0.92)';
+      ctx.strokeStyle = 'rgba(45, 75, 20, 0.75)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(0, 0, 72, 0.25, Math.PI * 2 - 0.1);
+      ctx.lineTo(0, 0);
+      ctx.fill();
+      ctx.stroke();
+
+      // Yaprak damarları
+      ctx.strokeStyle = 'rgba(55, 100, 30, 0.6)';
+      ctx.lineWidth = 1.2;
+      for (let d = 0; d < 8; d++) {
+        ctx.save();
+        ctx.rotate((Math.PI * 2 / 8) * d + 0.12);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(30, -12, 68, 0);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Zambak taç yaprakları (6 adet, dışa açılmış)
+      const petalCount = 6;
+      const petalColors = [
+        ['#3a0a15', '#6a1525'],
+        ['#420d10', '#751a28'],
+        ['#2e0810', '#581220'],
+      ];
+      for (let i = 0; i < petalCount; i++) {
+        ctx.save();
+        ctx.rotate((Math.PI * 2 / petalCount) * i + Math.PI / petalCount);
+        const colorSet = petalColors[i % petalColors.length];
+        const grad = ctx.createLinearGradient(8, 0, 80, 0);
+        grad.addColorStop(0, colorSet[0]);
+        grad.addColorStop(0.5, colorSet[1]);
+        grad.addColorStop(1, '#180508');
+        ctx.fillStyle = grad;
+        ctx.strokeStyle = 'rgba(130, 40, 55, 0.5)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(8, 0);
+        ctx.bezierCurveTo(20, -28, 65, -32, 80, 0);
+        ctx.bezierCurveTo(65, 32, 20, 28, 8, 0);
+        ctx.fill();
+        ctx.stroke();
+        // Petal orta damar
+        ctx.strokeStyle = 'rgba(160, 55, 70, 0.42)';
+        ctx.lineWidth = 0.9;
+        ctx.beginPath();
+        ctx.moveTo(10, 0);
+        ctx.lineTo(78, 0);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // İç küçük taç yapraklar (3 adet, dik duran)
+      for (let i = 0; i < 3; i++) {
+        ctx.save();
+        ctx.rotate((Math.PI * 2 / 3) * i + 0.3);
+        const grad2 = ctx.createLinearGradient(0, 0, 0, -55);
+        grad2.addColorStop(0, '#501018');
+        grad2.addColorStop(1, '#1c060c');
+        ctx.fillStyle = grad2;
+        ctx.strokeStyle = 'rgba(140, 45, 60, 0.48)';
+        ctx.lineWidth = 0.9;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-12, -20, -8, -50, 0, -55);
+        ctx.bezierCurveTo(8, -50, 12, -20, 0, 0);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Merkez (amber-kahve stamen)
+      const centerGrad = ctx.createRadialGradient(0, 0, 1, 0, 0, 11);
+      centerGrad.addColorStop(0, '#8a4a08');
+      centerGrad.addColorStop(1, '#3a1a05');
+      ctx.fillStyle = centerGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, 11, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Stamen noktaları
+      ctx.fillStyle = 'rgba(155, 85, 12, 0.92)';
+      for (let p = 0; p < 10; p++) {
+        const ang = (Math.PI * 2 / 10) * p;
+        ctx.beginPath();
+        ctx.arc(Math.cos(ang) * 7, Math.sin(ang) * 7, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    function animateRiver() {
+      rCtx.fillStyle = 'rgba(10, 15, 20, 0.4)';
+      rCtx.fillRect(0, 0, rCanvas.width, rCanvas.height);
+
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        let r = ripples[i];
+        r.rad += 0.5;
+        r.o -= 0.012;
+        if (r.o <= 0) { ripples.splice(i, 1); continue; }
+        rCtx.beginPath();
+        rCtx.arc(r.x, r.y, r.rad, 0, Math.PI * 2);
+        rCtx.strokeStyle = `rgba(160, 190, 220, ${r.o})`;
+        rCtx.lineWidth = 1;
+        rCtx.stroke();
+      }
+
+      rCtx.strokeStyle = 'rgba(200, 220, 255, 0.4)';
+      rain.forEach(r => {
+        r.x += r.vx;
+        r.y += r.vy;
+
+        rCtx.beginPath();
+        rCtx.moveTo(r.x, r.y);
+        rCtx.lineTo(r.x - r.vx, r.y - r.vy);
+        rCtx.stroke();
+
+        if (Math.random() < 0.035) {
+          ripples.push({ x: r.x, y: r.y, rad: 0, o: 0.45 });
+          r.x = Math.random() * rCanvas.width;
+          r.y = Math.random() * -100;
+        }
+
+        if (r.y > rCanvas.height + 20) {
+          r.x = Math.random() * rCanvas.width;
+          r.y = Math.random() * -100;
+        }
+      });
+
+      lotuses.forEach(l => {
+        l.x += l.vx;
+        l.y += l.vy;
+        l.a += 0.005;
+        if (l.y > rCanvas.height + 100) { l.y = -100; l.x = Math.random() * rCanvas.width; }
+        if (l.x > rCanvas.width + 100) l.x = -100;
+        if (l.x < -100) l.x = rCanvas.width + 100;
+        drawLily(rCtx, l.x, l.y, l.s, l.a);
+      });
+
+      requestAnimationFrame(animateRiver);
+    }
+
+    function startRiver() {
+      initRiver();
+      rCanvas.classList.add('show');
+      animateRiver();
+
+      setTimeout(() => {
+        const box = document.getElementById('space-text-box');
+        box.classList.add('show');
+        setTimeout(() => box.classList.add('visible'), 50);
+      }, 2000);
+    }
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initMatrix();
+      if (document.getElementById('river-canvas').classList.contains('show')) {
+        initRiver();
+      }
+    });
+  </script>
+</body>
+
+</html>
